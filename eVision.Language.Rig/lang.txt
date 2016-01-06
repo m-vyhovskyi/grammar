@@ -1,0 +1,36 @@
+﻿define WorkItemRiskLevel as enumeration which	
+	 has items
+		LowLow 
+		Low
+		Mid
+		High
+
+define PermitRiskLevel as enumeration which
+	
+	based on WorkItemRiskLevel and
+
+
+
+define WorkItem as an aggregate which
+	based on eVisionAggregate aggregate and
+
+	links workflow to a WorkItemWorkflow and creator to a DomainUser		
+
+	has fields 
+		Name as text which has max length of 100 and is mandatory
+		Code as descriptor which is not nullable and has translation to the current locale	
+
+	has properties 
+		Photo as image 
+			which is mandatory
+			and no larger than 50 MB
+
+
+
+	links flow to a Workflow
+	links creator to a User
+
+	has field RiskLevel as WorkItemRiskLevel which by default is LowLow
+
+
+	aggregateFieldDeclaration : 'has' ('field'|'fields') 
