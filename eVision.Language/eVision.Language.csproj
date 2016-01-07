@@ -50,15 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="obj\Debug\domainVisitor.cs" />
+    <Compile Include="Definitions\BasedOnNameDefinition.cs" />
+    <Compile Include="Definitions\Common\RankDefinition.cs" />
+    <Compile Include="Definitions\Definition.cs" />
+    <Compile Include="Definitions\DefinitionList.cs" />
+    <Compile Include="Definitions\Descriptor\DescriptorItemDefinition.cs" />
+    <Compile Include="Definitions\Descriptor\DescriptorDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Definitions\DomainDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <Antlr4 Include="Grammar\Domain.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>eVision.Language.Grammar</CustomToolNamespace>
-      <Listener>True</Listener>
+      <Listener>False</Listener>
       <Visitor>True</Visitor>
       <TargetLanguage>CSharp</TargetLanguage>
     </Antlr4>

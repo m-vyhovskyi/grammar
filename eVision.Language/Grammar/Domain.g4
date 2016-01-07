@@ -2,16 +2,30 @@ grammar Domain;
 
 import CommonLexerRules;
 
-prog: stat+
-	;
+domain: domainDecl define+ ;
 
-stat: expr NEWLINE			# printExpr 
-	| ID '=' expr NEWLINE	# assign 
-	| NEWLINE				# blank 
-	;
-expr: expr op=(MUL|DIV) expr	# Muldiv
-	| expr op=(ADD|SUB) expr	# AddSub 
-	| INT						# int 
-	| ID						# id 
-	| OBR expr CBR				# parens 
-	;
+domainDecl: 'domain' ID;
+
+define: defineDescriptor;
+
+basedOn: 'based' 'on' ID;
+
+defineDescriptor: 'define' 'descriptor' ID basedOn? 'with' descriptorBody # defDescriptor
+				;
+
+descriptorBody: descriptorItem+ ;
+
+descriptorItem	: 'item' ID descriptorWith?  #defDescriptorItem						
+				; 
+
+descriptorWith	: 'with' (rank? | translation*)
+				;
+
+translation		: 'translation' translationRule*	#	transRule
+				;
+
+translationRule	: 'for' LANGID 'as' STRING
+				;
+
+rank: ID;
+

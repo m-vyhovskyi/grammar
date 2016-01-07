@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 
 using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
 
+using eVision.Language.Definitions;
 using eVision.Language.Grammar;
 using eVision.Language.Rig.Grammar;
 
@@ -26,15 +25,15 @@ namespace eVision.Language.Rig
                 //parser.AddErrorListener(new ErrorListener()); // add ours
                 //var sw = new Stopwatch();
                 //sw.Start();
-                var tree = parser.prog();
-                //DomainVisitor visitor = new DomainVisitor();
-                //visitor.Visit(tree);
+                var tree = parser.domain();
+                DomainVisitor visitor = new DomainVisitor();
+                DomainDefinition res = (DomainDefinition)visitor.Visit(tree);
                 //sw.Stop();
                 //Console.WriteLine(sw.ElapsedMilliseconds);
                 //Console.WriteLine(res);
-                ParseTreeWalker walker = new ParseTreeWalker();
-                DomainListener listener = new DomainListener(parser);
-                walker.Walk(listener,tree);
+                //ParseTreeWalker walker = new ParseTreeWalker();
+                //walker.Walk(new DomainListener(parser), tree);
+                Console.WriteLine(res);
             }
         }
     }

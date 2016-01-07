@@ -1,70 +1,87 @@
 ﻿using System;
-using System.Collections.Generic;
 
+using Antlr4.Runtime.Tree;
+
+using eVision.Language.Definitions;
+using eVision.Language.Definitions.Descriptor;
 using eVision.Language.Grammar;
 
 namespace eVision.Language.Rig.Grammar
 {
-    public class DomainVisitor:DomainBaseVisitor<int>
+    public class DomainVisitor : DomainBaseVisitor<Definition>
     {
-        public static readonly Dictionary<string,int> variables = new Dictionary<string, int>(); 
-
-        public override int VisitAssign(DomainParser.AssignContext context)
+        private T Visit<T>(IParseTree tree) where T: Definition
         {
-            string id = context.ID().GetText();
-            var value = Visit(context.expr());
-            if (variables.ContainsKey(id))
+            return (T)Visit(tree);
+        }
+
+        public override Definition VisitDomainDecl(DomainParser.DomainDeclContext context)
+        {
+            return new DomainDefinition { Id = context.ID().GetText() };
+        }
+
+        public override Definition VisitDomain(DomainParser.DomainContext context)
+        {
+            var domain = Visit<DomainDefinition>(context.domainDecl());
+
+            foreach (var defineContext in context.define())
             {
-                variables[id] = value;
+                var model = Visit<Definition>(defineContext);
+                domain.AddDefinition(model);
             }
-            else
+            return domain;
+        }
+
+        public override Definition VisitDefDescriptor(DomainParser.DefDescriptorContext context)
+        {
+            var definition = new DescriptorDefinition
             {
-                variables.Add(id, value);
+                Id = context.ID().GetText()
+            };
+
+            var basedOn = context.basedOn();
+            if (basedOn != null) definition.BasedOn = basedOn.ID().GetText();
+
+            foreach (DomainParser.DefDescriptorItemContext itemContext in context.descriptorBody().descriptorItem())
+            {
+                definition.AddItemDefinition(VisitDefDescriptorItem(itemContext));
             }
-            return value;
+            
+            return definition;
         }
 
-        public override int VisitPrintExpr(DomainParser.PrintExprContext context)
+        
+        public override Definition VisitDefDescriptorItem(DomainParser.DefDescriptorItemContext context)
         {
-            var value = Visit(context.expr());
-            Console.WriteLine(value);
-            return 0;
+            var definition = new DescriptorItemDefinition
+            {
+                Id = context.ID().GetText()
+            };
+
+            var descriptorWith = context.descriptorWith();
+            if (descriptorWith != null)
+            {
+                Visit(descriptorWith);  
+            }
+            return definition;
         }
 
-        public override int VisitInt(DomainParser.IntContext context)
+        public override Definition VisitDescriptorWith(DomainParser.DescriptorWithContext context)
         {
-            return Int32.Parse(context.INT().GetText());
+            foreach (var translationContext in context.translation())
+            {
+                Visit(translationContext);
+            }
+            return null;
         }
 
-        public override int VisitId(DomainParser.IdContext context)
+        public override Definition VisitTransRule(DomainParser.TransRuleContext context)
         {
-            string id = context.ID().GetText();
-            if (variables.ContainsKey(id))
-                return variables[id];
-            return 0;
-        }
-
-        public override int VisitMuldiv(DomainParser.MuldivContext context)
-        {
-            int left = Visit(context.expr(0));
-            int right = Visit(context.expr(1));
-            if (context.op.Type == DomainParser.MUL)
-                return left * right;
-            return left / right;
-        }
-
-        public override int VisitAddSub(DomainParser.AddSubContext context)
-        {
-            int left = Visit(context.expr(0));
-            int right = Visit(context.expr(1));
-            if (context.op.Type == DomainParser.ADD)
-                return left + right;
-            return left - right;
-        }
-
-        public override int VisitParens(DomainParser.ParensContext context)
-        {
-            return Visit(context.expr());
+            foreach (var rule in context.translationRule())
+            {
+                Console.WriteLine("translated to {0} as {1}",rule.LANGID().GetText(),rule.STRING().GetText());                
+            }
+            return null;
         }
     }
 }
