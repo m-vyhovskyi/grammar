@@ -3,7 +3,7 @@ using System.Text;
 
 namespace eVision.Language.Definitions
 {
-    public class DefinitionList : List<Definition>
+    public class DefinitionList : List<IDefinition>
     {
         private readonly string name;
 

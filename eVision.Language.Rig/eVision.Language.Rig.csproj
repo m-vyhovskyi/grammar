@@ -47,19 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\eVision.Language\obj\Debug\DomainBaseVisitor.cs">
-      <Link>Grammar\Generated\DomainBaseVisitor.cs</Link>
-    </Compile>
-    <Compile Include="..\eVision.Language\obj\Debug\DomainLexer.cs">
-      <Link>Grammar\Generated\DomainLexer.cs</Link>
-    </Compile>
-    <Compile Include="..\eVision.Language\obj\Debug\DomainParser.cs">
-      <Link>Grammar\Generated\DomainParser.cs</Link>
-    </Compile>
-    <Compile Include="..\eVision.Language\obj\Debug\DomainVisitor.cs">
-      <Link>Grammar\Generated\DomainVisitor.cs</Link>
-    </Compile>
-    <Compile Include="Grammar\DomainVisitor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +65,9 @@
       <Project>{2BF1F649-8F77-41DE-8991-16A08D0BB34C}</Project>
       <Name>eVision.Language</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Grammar\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

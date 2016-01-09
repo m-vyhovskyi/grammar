@@ -3,23 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eVision.Language.Definitions.Descriptor;
+using eVision.Language.Grammar;
 
 namespace eVision.Language.Definitions
 {
-    public class DomainDefinition : Definition
+    public class DomainDefinition : Definition<DomainParser.DomainContext>
+        , IApplyDefinition<DescriptorDefinition>
     {
-        private readonly DefinitionList definitions = new DefinitionList("definitions");
+        public DefinitionList Definitions { get; private set; }
 
-        public void AddDefinition(Definition definition)
+        public DomainDefinition(): base()
         {
-            definitions.Add(definition);
+            Definitions = new DefinitionList("definitions");
         }
 
-        public IEnumerable<DescriptorDefinition> Descriptors { get { return definitions.Cast<DescriptorDefinition>(); } }
+        public void Exit()
+        {
+
+        }
+
+        public IEnumerable<DescriptorDefinition> Descriptors { get { return Definitions.Cast<DescriptorDefinition>(); } }
 
         public override string ToString()
         {
-            return String.Format("domain {0} {{ {1} }}",Id,definitions);
+            return String.Format("domain {0} {{ {1} }}",Id, Definitions);
+        }
+
+        public void Apply(DescriptorDefinition definition)
+        {
+            Definitions.Add(definition);
         }
     }
 }

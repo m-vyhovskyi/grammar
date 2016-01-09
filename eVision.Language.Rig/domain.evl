@@ -6,19 +6,8 @@ define descriptor StandardRiskLevel with
 	item High
 
 define descriptor Variant with
-	ColdWork with rank of 1
-	Radiation with rank of 2
-	InstrumentationAndControls with rank of 3
-	IndustrialCleaning with rank of 4
-	Mechanical with rank of 5
-	Excavation with rank of 6
-	Electrical with rank of 7
-	LiftingAndHoisting with rank of 8
-	WorkingAtHeight with rank of 9
-	BreakingContainment with rank of 10
-	HotWork with rank of 11
-	ConfinedSpaceWork with rank of 12
+	item ConfinedSpaceWork
 
 
 define descriptor RiskLevel based on StandardRiskLevel with
-	item SuperHigh
+	item SuperHigh with rank as 11

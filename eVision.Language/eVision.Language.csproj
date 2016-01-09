@@ -56,6 +56,16 @@
     <Compile Include="Definitions\DefinitionList.cs" />
     <Compile Include="Definitions\Descriptor\DescriptorItemDefinition.cs" />
     <Compile Include="Definitions\Descriptor\DescriptorDefinition.cs" />
+    <Compile Include="Definitions\IApplyDefinition.cs" />
+    <Compile Include="Definitions\IDefinition.cs" />
+    <Compile Include="DomainListener.cs" />
+    <Compile Include="obj\Debug\CommonLexerRules.cs" />
+    <Compile Include="obj\Debug\DomainBaseListener.cs" />
+    <Compile Include="obj\Debug\DomainBaseVisitor.cs" />
+    <Compile Include="obj\Debug\DomainLexer.cs" />
+    <Compile Include="obj\Debug\DomainListener.cs" />
+    <Compile Include="obj\Debug\DomainParser.cs" />
+    <Compile Include="obj\Debug\DomainVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Definitions\DomainDefinition.cs" />
   </ItemGroup>
@@ -63,7 +73,7 @@
     <Antlr4 Include="Grammar\Domain.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>eVision.Language.Grammar</CustomToolNamespace>
-      <Listener>False</Listener>
+      <Listener>True</Listener>
       <Visitor>True</Visitor>
       <TargetLanguage>CSharp</TargetLanguage>
     </Antlr4>
@@ -73,9 +83,7 @@
     </Antlr4>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Grammar\Generated\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

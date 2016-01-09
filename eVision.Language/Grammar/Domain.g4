@@ -27,5 +27,5 @@ translation		: 'translation' translationRule*	#	transRule
 translationRule	: 'for' LANGID 'as' STRING
 				;
 
-rank: ID;
+rank: 'rank' 'as' INT;
 

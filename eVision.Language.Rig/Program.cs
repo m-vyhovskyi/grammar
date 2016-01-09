@@ -5,7 +5,7 @@ using Antlr4.Runtime;
 
 using eVision.Language.Definitions;
 using eVision.Language.Grammar;
-using eVision.Language.Rig.Grammar;
+using Antlr4.Runtime.Tree;
 
 namespace eVision.Language.Rig
 {
@@ -17,8 +17,8 @@ namespace eVision.Language.Rig
             {
                 AntlrInputStream inputStream = new AntlrInputStream(fileStream);
 
-                DomainLexer lexer = new DomainLexer(inputStream);
-                CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
+                var lexer = new DomainLexer(inputStream);
+                var commonTokenStream = new CommonTokenStream(lexer);
                 DomainParser parser = new DomainParser(commonTokenStream);
 
                 //parser.RemoveErrorListeners();
@@ -26,14 +26,11 @@ namespace eVision.Language.Rig
                 //var sw = new Stopwatch();
                 //sw.Start();
                 var tree = parser.domain();
-                DomainVisitor visitor = new DomainVisitor();
-                DomainDefinition res = (DomainDefinition)visitor.Visit(tree);
                 //sw.Stop();
                 //Console.WriteLine(sw.ElapsedMilliseconds);
                 //Console.WriteLine(res);
-                //ParseTreeWalker walker = new ParseTreeWalker();
-                //walker.Walk(new DomainListener(parser), tree);
-                Console.WriteLine(res);
+                ParseTreeWalker walker = new ParseTreeWalker();
+                walker.Walk(new DomainListener(), tree);
             }
         }
     }
