@@ -30,7 +30,8 @@ namespace eVision.Language.Rig
                 //Console.WriteLine(sw.ElapsedMilliseconds);
                 //Console.WriteLine(res);
                 ParseTreeWalker walker = new ParseTreeWalker();
-                walker.Walk(new DomainListener(), tree);
+                var listener = new DomainListener();
+                walker.Walk(listener, tree);
             }
         }
     }

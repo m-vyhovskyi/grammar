@@ -68,6 +68,7 @@
     <Compile Include="obj\Debug\DomainVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Definitions\DomainDefinition.cs" />
+    <Compile Include="TypeLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="Grammar\Domain.g4">

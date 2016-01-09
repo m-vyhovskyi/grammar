@@ -16,43 +16,44 @@ namespace eVision.Language
     {
         private Dictionary<RuleContext, IDefinition> Definitions = new Dictionary<RuleContext, IDefinition>();
 
-        public DomainDefinition domain = new DomainDefinition();
+        public IDefinition RootDefinition { get; set; }
 
         private IDefinition GetParentFor(RuleContext ctx)
         {
             var parent = ctx.parent;
-            while (!Definitions.ContainsKey(parent) && parent != null)
+            while (parent != null && !Definitions.ContainsKey(parent))
             {
                 parent = parent.parent;
             }
-            return Definitions[parent];
+            if (parent != null)
+            {
+                return Definitions[parent];
+            }
+            return null;
         }
 
-        public void EnterEveryRule(Antlr4.Runtime.ParserRuleContext ctx)
+        private IDefinition GetDefinitionFor(ParserRuleContext ctx)
+        {
+            var handleType = TypeLocator.GetHandleType(ctx);
+            if (handleType != null)
+            {
+                return Activator.CreateInstance(handleType) as IDefinition;
+            }
+            return null;
+        }
+
+        public void EnterEveryRule(ParserRuleContext ctx)
         {
             Console.WriteLine("Entering rule {0}",ctx);
-            // try to resolve a definition to handle the context visit
-            if (ctx is DomainParser.DomainContext)
+            var definition = GetDefinitionFor(ctx);
+            if (definition != null)
             {
-                domain.Enter(ctx as DomainParser.DomainContext, null);
-                Definitions.Add(ctx, domain);
-            }
-            else if (ctx is DomainParser.DefineDescriptorContext)
-            {
-                var definition = new DescriptorDefinition();
-                definition.Enter(ctx as DomainParser.DefineDescriptorContext, GetParentFor(ctx));
-                Definitions.Add(ctx, definition);
-            }
-            else if (ctx is DomainParser.DefDescriptorItemContext)
-            {
-                var definition = new DescriptorItemDefinition();                
-                definition.Enter(ctx as DomainParser.DefDescriptorItemContext, GetParentFor(ctx));
-                Definitions.Add(ctx, definition);
-            }
-            else if (ctx is DomainParser.RankContext)
-            {
-                var definition = new RankDefinition();
-                definition.Enter(ctx as DomainParser.RankContext, GetParentFor(ctx));
+                if (RootDefinition == null)
+                {
+                    RootDefinition = definition;
+                }
+                var parentDefinition = GetParentFor(ctx);
+                definition.Enter(ctx, parentDefinition);
                 Definitions.Add(ctx, definition);
             }
         }
@@ -60,26 +61,11 @@ namespace eVision.Language
         public void ExitEveryRule(Antlr4.Runtime.ParserRuleContext ctx)
         {
             Console.WriteLine("Exiting rule {0}", ctx);
-            if (ctx is DomainParser.DomainContext)
-            {
-                domain.Exit();
-            }
-            else if (ctx is DomainParser.DefineDescriptorContext)
+            if (Definitions.ContainsKey(ctx))
             {
                 var definition = Definitions[ctx];
                 definition.Exit();
             }
-            else if (ctx is DomainParser.DescriptorItemContext)
-            {
-                var definition = Definitions[ctx];
-                definition.Exit();
-            }
-            else if (ctx is DomainParser.RankContext)
-            {
-                var definition = Definitions[ctx];
-                definition.Exit();
-            }
-
         }
 
         public void VisitErrorNode(IErrorNode node)

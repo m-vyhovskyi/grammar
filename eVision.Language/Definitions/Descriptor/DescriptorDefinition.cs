@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace eVision.Language.Definitions.Descriptor
 {
-    public class DescriptorDefinition : BasedOnNameDefinition<DomainParser.DefineDescriptorContext>,
+    public class DescriptorDefinition : BasedOnNameDefinition<DomainParser.DefDescriptorContext>,
         IApplyDefinition<DescriptorItemDefinition>
     {
         public List<DescriptorItemDefinition> Items { get; set; }

@@ -3,7 +3,7 @@ using System;
 
 namespace eVision.Language.Definitions
 {
-    public class Definition<C>: IDefinition where C : ParserRuleContext
+    public abstract class Definition<C>: IDefinition where C : ParserRuleContext
     {
         public string Id { get; set; }
 
@@ -15,9 +15,9 @@ namespace eVision.Language.Definitions
             return string.Format("[{0}]",Id);
         }
 
-        public virtual void Enter(C context, IDefinition parent)
+        public void Enter(ParserRuleContext ctx, IDefinition parent)
         {
-            this.Context = context;
+            this.Context = (C)ctx;
             this.Parent = parent;
         }
 
@@ -27,7 +27,7 @@ namespace eVision.Language.Definitions
         }
     }
 
-    public class NameDefinition<C> : Definition<C> where C : ParserRuleContext
+    public abstract class NameDefinition<C> : Definition<C> where C : ParserRuleContext
     {
         public string Name { get; set; }
 
