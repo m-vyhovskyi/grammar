@@ -6,7 +6,7 @@ define descriptor StandardRiskLevel with
 	item High
 
 define descriptor Variant with
-	item ConfinedSpaceWork
+	item ConfinedSpaceWork with translation for fr-fr as "Purlevu la France"
 
 
 define descriptor RiskLevel based on StandardRiskLevel with

@@ -17,11 +17,6 @@ namespace eVision.Language.Definitions
             Definitions = new DefinitionList("definitions");
         }
 
-        public void Exit()
-        {
-
-        }
-
         public IEnumerable<DescriptorDefinition> Descriptors { get { return Definitions.Cast<DescriptorDefinition>(); } }
 
         public override string ToString()

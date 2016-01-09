@@ -21,7 +21,7 @@ descriptorItem	: 'item' ID descriptorWith?  #defDescriptorItem
 descriptorWith	: 'with' (rank? | translation*)
 				;
 
-translation		: 'translation' translationRule*	#	transRule
+translation		: 'translation' translationRule*
 				;
 
 translationRule	: 'for' LANGID 'as' STRING

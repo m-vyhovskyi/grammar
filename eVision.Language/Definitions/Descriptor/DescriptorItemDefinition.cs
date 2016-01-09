@@ -5,18 +5,24 @@ namespace eVision.Language.Definitions.Descriptor
 {
     public class DescriptorItemDefinition : Definition<DomainParser.DefDescriptorItemContext>
         , IApplyDefinition<RankDefinition>
+        , IApplyDefinition<TranslationRuleDefinition>
     {
         public RankDefinition Rank { get; set; }
 
-        public override void Exit()
+        protected override void Handle()
         {
             Id = Context.ID().GetText();
-             (Parent as IApplyDefinition<DescriptorItemDefinition>).Apply(this);
         }
 
         public void Apply(RankDefinition definition)
         {
             Rank = definition;
         }
+
+        public void Apply(TranslationRuleDefinition definition)
+        {
+            Translations.Add(definition);
+        }
+
     }
 }
